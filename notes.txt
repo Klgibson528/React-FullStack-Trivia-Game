@@ -1,0 +1,21 @@
+// Display one question with answer choices 
+
+// aggregate all possible answers to one list
+// assign each answer choice a key and value
+// key is answer, value is true or false
+
+// list out answer choices using radio buttons in form 
+
+// on submit, check is vale is true 
+// if true, return 'Correct!'
+// add one point to correct-counter
+// if false, return 'Wrong!'
+
+
+// Next question button will generate next question in list and populate answer choices
+
+// statistics can be calculated using correct-counter and total
+// and <h1> at top that track how many you've got correct
+
+Stretch
+// make way to choose category and number of questions

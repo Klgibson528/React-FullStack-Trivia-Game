@@ -1,3 +1,7 @@
 .App {
   text-align: center;
 }
+
+.ans ol {
+  list-style: upper-alpha;
+}
