@@ -15,14 +15,13 @@ class App extends Component {
     //basically binding to this class so you can use it later
     //if this wasn't set here, user ould have to click button to get questions
     this.get_questions();
-    
   }
   //we keep this method in the class becuase it deals with state
   get_questions(event) {
     //calling api we created on back-end
     //eventually need call on back end for multiple players
     axios
-      .get("http://localhost:8080/api/get-questions")
+      .get("http://localhost:9080/api/get-questions")
       .then(response => {
         var answers = [];
         var completed = [];
@@ -46,7 +45,9 @@ class App extends Component {
         this.setState({
           questions: response.data.questions,
           answers: answers,
-          completed: completed
+          completed: completed,
+          count: 0,
+          
         });
       })
 
@@ -64,21 +65,21 @@ class App extends Component {
       //if incorrect, change value to incorrect
       completed[qindex] = "incorrect";
     }
-//resetting state with added status of question
+    //resetting state with added status of question
     this.setState({ completed: completed });
   }
 
   //feed it question index
   display_answers(qindex) {
-
     console.log(qindex, this.state.answers[qindex]);
     return (
       //returning answers associated with each question
-      <div>
+      <div className="ans">
         {this.state.answers[qindex].map((a, index) => {
           return (
             // if status of question is not answered, button is active
             <button
+              className="btn-sm"
               disabled={
                 this.state.completed[qindex] !== "not-answered"
                   ? "disabled"
@@ -97,28 +98,36 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <h1>The Best Trivia Game</h1>
-        {/* when using an on- event the below format is recommended */}
-        {/* on click event the get_questions function will run and return a new set of questions */}
-        <button onClick={e => this.get_questions(e)}>Get questions</button>
-        <ol>
-          {/* using map to loop through the questions in the list and return an li */}
-          {/* this.state.questions is defined above in setState */}
-          {this.state.questions.map((q, index) => {
-            {
-              /* way to stop react from automatically escaping special characters */
-            }
-            return (
-              <div>
-                <p dangerouslySetInnerHTML={{ __html: q.category }} />
-                <li dangerouslySetInnerHTML={{ __html: q.question }} />
-                {this.display_answers(index)}
-                {/* renders incorrect and correct divs */}
-                <Check_Ans status={this.state.completed[index]} />
-              </div>
-            );
-          })}
-        </ol>
+        <div className="header container-fluid">
+          <h2>The Best Trivia Game</h2>
+          <h4>Correct: {this.state.count}/10</h4>
+          {/* when using an on- event the below format is recommended */}
+          {/* on click event the get_questions function will run and return a new set of questions */}
+          <button className="btn" onClick={e => this.get_questions(e)}>
+            Get Questions
+          </button>
+        </div>
+        <div className="container">
+          <div className="spacer"></div>
+            {/* using map to loop through the questions in the list and return an li */}
+            {/* this.state.questions is defined above in setState */}
+            {this.state.questions.map((q, index) => {
+              {
+                /* way to stop react from automatically escaping special characters */
+              }
+              return (
+                <div className="questions">
+                  {/* <p dangerouslySetInnerHTML={{ __html: q.category }} /> */}
+                 <p> Question {index + 1 } </p> 
+                 <p dangerouslySetInnerHTML={{ __html: q.question }} />
+                  {this.display_answers(index)}
+                  {/* renders incorrect and correct divs */}
+                  <Check_Ans status={this.state.completed[index]} />
+                </div>
+              );
+            })}
+          
+        </div>
       </div>
     );
   }

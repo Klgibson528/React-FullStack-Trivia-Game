@@ -12,7 +12,7 @@ app.use(express.static("build"));
 app.get("/api/get-questions", function(req, res, next) {
   // use axios to make api call
   axios
-    .get("https://opentdb.com/api.php?amount=10")
+    .get("https://opentdb.com/api.php?amount=10&difficulty=easy")
     .then(function(response) {
       //.data is built into axios which returns JSON from API call
       //.json is used because we are sending out JSON
@@ -22,7 +22,6 @@ app.get("/api/get-questions", function(req, res, next) {
     .catch(next);
 });
 
-
-app.listen(8080, function() {
-  console.log("Listening on port 8080");
+app.listen(9080, function() {
+  console.log("Listening on port 9080");
 });

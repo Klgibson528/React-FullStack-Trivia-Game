@@ -2,6 +2,52 @@
   text-align: center;
 }
 
-.ans ol {
-  list-style: upper-alpha;
+.header {
+  background-color: lightgreen;
+  width: 100%;
+  position: fixed;
+  height: 180px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center
+}
+
+.spacer {
+  height: 180px;
+}
+
+.btn {
+  border-radius: 100px;
+  width: 200px;
+  align-self: center
+}
+
+.btn-sm {
+  border-radius: 10px;
+}
+
+.ans {
+  display: flex;
+  flex-direction: column;
+  width: 75%;
+  align-self: center;
+}
+
+.ans>* {
+  margin-top: 10px;
+  min-width: 180px
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.questions {
+  margin: 20px;
+  background-color: lightgrey;
+  display: flex;
+  flex-direction: column;
+  padding: 10px
 }
