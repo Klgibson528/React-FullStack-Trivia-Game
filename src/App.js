@@ -3,12 +3,13 @@ import "./App.css";
 //make calls to API
 import axios from "axios";
 import shuffle from "shuffle-array";
+import Check_Ans from "./components/Check_Ans"
 
 class App extends Component {
   constructor(props) {
     super(props);
     //setting initial state
-    this.state = { questions: [], answers: [] };
+    this.state = { questions: [], answers: [], count: 0, completed: [] };
     //basically binding to this class so you can use it later
     this.get_questions();
   }
@@ -20,6 +21,7 @@ class App extends Component {
       .get("http://localhost:8080/api/get-questions")
       .then(response => {
         var answers = [];
+        var completed = [];
 
         //setting state with new set of questions
 
@@ -28,22 +30,50 @@ class App extends Component {
         response.data.questions.forEach(function(q) {
           var ans = [...q.incorrect_answers];
           ans.push(q.correct_answer);
+          //shuffles answer choice array
           shuffle(ans);
-          console.log(ans);
           answers.push(ans);
+          completed.push("not-answered");
         });
-        this.setState({ questions: response.data.questions, answers: answers });
+        this.setState({
+          questions: response.data.questions,
+          answers: answers,
+          completed: completed
+        });
       })
 
       .catch(error => {});
   }
 
-  display_answers(index) {
-    console.log(index, this.state.answers[index]);
+  check_ans(ans, qindex) {
+    var completed = [...this.state.completed];
+
+    if (ans === this.state.questions[qindex].correct_answer) {
+      completed[qindex] = "correct";
+      this.setState({ count: this.state.count + 1 });
+    } else {
+      completed[qindex] = "incorrect";
+    }
+
+    this.setState({ completed: completed });
+  }
+
+  display_answers(qindex) {
+    console.log(qindex, this.state.answers[qindex]);
     return (
       <div>
-        {this.state.answers[index].map((a, index) => {
-          return <button dangerouslySetInnerHTML={{ __html: a }} />;
+        {this.state.answers[qindex].map((a, index) => {
+          return (
+            <button
+              disabled={
+                this.state.completed[qindex] !== "not-answered"
+                  ? "disabled"
+                  : ""
+              }
+              dangerouslySetInnerHTML={{ __html: a }}
+              onClick={e => this.check_ans(a, qindex)}
+            />
+          );
         })}
       </div>
     );
@@ -68,6 +98,7 @@ class App extends Component {
                 <p dangerouslySetInnerHTML={{ __html: q.category }} />
                 <li dangerouslySetInnerHTML={{ __html: q.question }} />
                 {this.display_answers(index)}
+                <Check_Ans status={this.state.completed[index]} />
               </div>
             );
           })}
