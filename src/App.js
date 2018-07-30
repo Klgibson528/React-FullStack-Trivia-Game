@@ -20,8 +20,11 @@ class App extends Component {
   get_questions(event) {
     //calling api we created on back-end
     //eventually need call on back end for multiple players
+    
+    
+    
     axios
-      .get("http://localhost:9080/api/get-questions")
+      .get("http://localhost:8081/api/get-questions")
       .then(response => {
         var answers = [];
         var completed = [];
