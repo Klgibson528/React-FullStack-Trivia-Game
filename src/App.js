@@ -20,11 +20,14 @@ class App extends Component {
   get_questions(event) {
     //calling api we created on back-end
     //eventually need call on back end for multiple players
-    
-    
-    
+    let apiURL = "/api/get-questions";
+    if (window.location.host === "localhost:3000") {
+      apiURL = "http://localhost:9080" + apiURL;
+    }
+    console.log("apiURL", apiURL);
+
     axios
-      .get("http://localhost:8081/api/get-questions")
+      .get(apiURL)
       .then(response => {
         var answers = [];
         var completed = [];
@@ -49,8 +52,7 @@ class App extends Component {
           questions: response.data.questions,
           answers: answers,
           completed: completed,
-          count: 0,
-          
+          count: 0
         });
       })
 
@@ -111,25 +113,24 @@ class App extends Component {
           </button>
         </div>
         <div className="container">
-          <div className="spacer"></div>
-            {/* using map to loop through the questions in the list and return an li */}
-            {/* this.state.questions is defined above in setState */}
-            {this.state.questions.map((q, index) => {
-              {
-                /* way to stop react from automatically escaping special characters */
-              }
-              return (
-                <div className="questions">
-                  {/* <p dangerouslySetInnerHTML={{ __html: q.category }} /> */}
-                 <p> Question {index + 1 } </p> 
-                 <p dangerouslySetInnerHTML={{ __html: q.question }} />
-                  {this.display_answers(index)}
-                  {/* renders incorrect and correct divs */}
-                  <Check_Ans status={this.state.completed[index]} />
-                </div>
-              );
-            })}
-          
+          <div className="spacer" />
+          {/* using map to loop through the questions in the list and return an li */}
+          {/* this.state.questions is defined above in setState */}
+          {this.state.questions.map((q, index) => {
+            {
+              /* way to stop react from automatically escaping special characters */
+            }
+            return (
+              <div className="questions">
+                {/* <p dangerouslySetInnerHTML={{ __html: q.category }} /> */}
+                <p> Question {index + 1} </p>
+                <p dangerouslySetInnerHTML={{ __html: q.question }} />
+                {this.display_answers(index)}
+                {/* renders incorrect and correct divs */}
+                <Check_Ans status={this.state.completed[index]} />
+              </div>
+            );
+          })}
         </div>
       </div>
     );

@@ -2,8 +2,6 @@ const express = require("express");
 const axios = require("axios");
 const cors = require("cors");
 const morgan = require("morgan");
-const path = require("path");
-const compression = require("compression");
 
 const app = express();
 
@@ -11,6 +9,7 @@ const app = express();
 //adds header to let any url access your API
 //to make more specific, add react app url instead of star to say only that url can use API
 app.use(cors());
+app.use(express.static("build"));
 
 app.get("/api/get-questions", function(req, res, next) {
   // use axios to make api call
@@ -26,9 +25,9 @@ app.get("/api/get-questions", function(req, res, next) {
 });
 
 app.get("*", (req, res) => {
-  res.sendFile(path.resolve(__dirname, + "/build/index.html"));
+  res.sendFile(__dirname, +"/build/index.html");
 });
 
-const port = process.env.PORT || 8081;
+const port = process.env.PORT || 9080;
 app.listen(port);
 console.log(`listening on ${port}`);
